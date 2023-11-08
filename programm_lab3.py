@@ -1,4 +1,7 @@
 import nltk
+nltk.download('stopwords')
+nltk.download('WordNetLemmatizer')
+nltk.download('wordnet')
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 nltk.download('punkt')
@@ -12,7 +15,7 @@ stopwords = set(stopwords.words('english'))
 lemmatizer = WordNetLemmatizer()
 
 def preprocess_df():
-    df = pd.read_csv('lab3files\youtoxic_english_1000.csv',sep=',')
+    df = pd.read_csv('youtoxic_english_1000.csv',sep=',')
     selected_columns = ['CommentId', 'VideoId', 'Text', 'IsHatespeech', 'IsReligiousHate', 'IsProvocative']
     df_selected = df[selected_columns]
     df_selected =df_selected[(df_selected[['IsHatespeech','IsReligiousHate','IsProvocative']]==True).any(axis=1)]
@@ -56,21 +59,25 @@ def counter_and_visualiser(df):
         plt.bar(range(20), [count for word, count in sorted_lemmatized_word_counts[:20]], tick_label=[word for word, count in sorted_lemmatized_word_counts[:20]])
         plt.title(f'Lemmatized Word Frequency ({category})')
         plt.tight_layout()
+        plt.savefig(f'Lemmatized Word Frequency ({category}).png')
         plt.show()
         plt.figure(figsize=(10, 5))
         plt.barh(range(20), [count for word, count in sorted_non_lemmatized_word_counts[:20]], tick_label=[word for word, count in sorted_non_lemmatized_word_counts[:20]])
         plt.title(f'Non-Lemmatized Word Frequency ({category})')
         plt.tight_layout()
+        plt.savefig(f'Non-Lemmatized Word Frequency ({category}).png')
         plt.show()
         lemmatized_wordcloud = WordCloud(width=800, height=400, background_color='white').generate_from_frequencies(lemmatized_word_counts)
         plt.figure(figsize=(10, 5))
         plt.imshow(lemmatized_wordcloud, interpolation='bilinear')
         plt.title(f'Lemmatized Word Cloud ({category})')
+        plt.savefig(f'Lemmatized Word Cloud ({category}).png')
         plt.show()
         non_lemmatized_wordcloud = WordCloud(width=800, height=400, background_color='white').generate_from_frequencies(non_lemmatized_word_counts)
         plt.figure(figsize=(10, 5))
         plt.imshow(non_lemmatized_wordcloud, interpolation='bilinear')
         plt.title(f'Non-Lemmatized Word Cloud ({category})')
+        plt.savefig(f'Non-Lemmatized Word Cloud ({category}).png')
         plt.show()
 if __name__ == '__main__':
     df = preprocess_df()
