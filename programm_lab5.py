@@ -35,11 +35,11 @@ def visualize_word_embeddings(model, words):
         plt.scatter(word_vectors_2d[i, 0], word_vectors_2d[i, 1], label=word)
 
     plt.legend()
-    plt.show()
+    # plt.show()
 
 
 def start():
-    file_path = 'lab5_files\\tripadvisor_hotel_reviews.csv'
+    file_path = 'lab5_files/tripadvisor_hotel_reviews.csv'
     df = load_data(file_path)
     nlp = spacy.load("en_core_web_sm")
     sentences = tokenize_and_preprocess(df, nlp)
