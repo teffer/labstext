@@ -16,7 +16,7 @@ def preprocess_text(text, nlp):
 def tokenize_and_preprocess(df, nlp):
     return df['Review'].apply(lambda x: preprocess_text(x, nlp)).tolist()
 
-def build_word2vec_model(sentences, vector_size=100, window=5, min_count=5, workers=3, epochs=3):
+def build_word2vec_model(sentences, vector_size=70, window=5, min_count=5, workers=3, epochs=3):
     return Word2Vec(sentences=sentences, vector_size=vector_size, window=window, min_count=min_count, workers=workers, epochs=epochs)
 
 def compare_similar_words(model, words):
