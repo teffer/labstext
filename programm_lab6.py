@@ -5,11 +5,12 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.manifold import TSNE
 import matplotlib.pyplot as plt
 nlp = spacy.load("en_core_web_sm")
-METHOD = 'tfidf'
+METHOD = 'doc2vec'
 methodvariants = ['tfidf','doc2vec']
 def load_data(file_path):
     data = pd.read_csv(file_path)
@@ -40,8 +41,12 @@ def vectorize_doc2vec(X_train):
     return X_train_doc2vec
 
 def train_model(X_train, y_train, voriectzation_method=METHOD):
-    model = LogisticRegression(multi_class='ovr')
-    model.fit(X_train, y_train)
+    if METHOD =='doc2vec':
+        model = RandomForestClassifier()
+        model.fit(X_train,y_train)
+    else:
+        model = LogisticRegression(multi_class='ovr')
+        model.fit(X_train, y_train)
     return model
 def evaluate_model(model, X_test, y_test):
     y_pred = model.predict(X_test)
@@ -69,7 +74,7 @@ def start(file_path):
     if vectorization_method == 'tfidf':
         X_train_vectorized, X_test_vectorized = vectorize_tfidf(X_train, X_test)
     else:
-        X_train_vectorized = vectorize_doc2vec(X_train)
+        X_train_vectorized = np.array(vectorize_doc2vec(X_train))
         X_test_vectorized = np.array(vectorize_doc2vec(X_test))
 
     model = train_model(X_train_vectorized, y_train, vectorization_method)
