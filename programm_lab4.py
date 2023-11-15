@@ -31,6 +31,7 @@ def visualize_data(tfidf_matrix):
 
     plt.figure(figsize=(10, 8))
     plt.scatter(tsne_result[:, 0], tsne_result[:, 1], alpha=0.5)
+    plt.savefig('lab4.png')
     plt.show()
 
 def find_similar_movies(movie_index, matrix, top_n=5):
@@ -48,7 +49,7 @@ def find_similar_movies_to_new(new_movie_vector, matrix, top_n=5):
     related_movies = cosine_similarities.argsort()[:-top_n-1:-1]
     return related_movies
 
-def start(file_path='lab4_files\\tmdb_5000_movies.csv'):
+def start(file_path='lab4_files/tmdb_5000_movies.csv'):
     data = load_data(file_path)
     data = preprocess_data(data)
     vectorizer, tfidf_matrix = vectorize_data(data)

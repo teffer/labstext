@@ -33,9 +33,8 @@ def visualize_word_embeddings(model, words):
     plt.figure(figsize=(10, 8))
     for i, word in enumerate(words):
         plt.scatter(word_vectors_2d[i, 0], word_vectors_2d[i, 1], label=word)
-
-    plt.legend()
-    # plt.show()
+    plt.savefig('lab5.png')
+    plt.show()
 
 
 def start():
