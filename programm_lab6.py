@@ -10,7 +10,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.manifold import TSNE
 import matplotlib.pyplot as plt
 nlp = spacy.load("en_core_web_sm")
-METHOD = 'doc2vec'
+METHOD = 'tfidf'
 methodvariants = ['tfidf','doc2vec']
 def load_data(file_path):
     data = pd.read_csv(file_path)
