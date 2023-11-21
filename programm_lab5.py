@@ -16,7 +16,7 @@ def preprocess_text(text, nlp):
 def tokenize_and_preprocess(df, nlp):
     return df['Review'].apply(lambda x: preprocess_text(x, nlp)).tolist()
 
-def build_word2vec_model(sentences, vector_size=100, window=5, min_count=5, workers=3, epochs=3):
+def build_word2vec_model(sentences, vector_size=70, window=5, min_count=5, workers=3, epochs=3):
     return Word2Vec(sentences=sentences, vector_size=vector_size, window=window, min_count=min_count, workers=workers, epochs=epochs)
 
 def compare_similar_words(model, words):
@@ -33,13 +33,12 @@ def visualize_word_embeddings(model, words):
     plt.figure(figsize=(10, 8))
     for i, word in enumerate(words):
         plt.scatter(word_vectors_2d[i, 0], word_vectors_2d[i, 1], label=word)
-
-    plt.legend()
+    plt.savefig('lab5.png')
     plt.show()
 
 
 def start():
-    file_path = 'lab5_files\\tripadvisor_hotel_reviews.csv'
+    file_path = 'lab5_files/tripadvisor_hotel_reviews.csv'
     df = load_data(file_path)
     nlp = spacy.load("en_core_web_sm")
     sentences = tokenize_and_preprocess(df, nlp)
