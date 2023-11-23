@@ -1,0 +1,21 @@
+
+    <html>
+    <head>
+      <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    </head>
+    <body>
+      <div id="graph"></div>
+      <script type="text/javascript">
+        var nodes = new vis.DataSet([]);
+        var edges = new vis.DataSet([]);
+        var container = document.getElementById('graph');
+        var data = {
+          nodes: nodes,
+          edges: edges
+        };
+        var options = {};
+        var network = new vis.Network(container, data, options);
+      </script>
+    </body>
+    </html>
+    

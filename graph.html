@@ -1,0 +1,22 @@
+
+    <html>
+    <head>
+        <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    </head>
+    <body>
+        <div id="graph-container"></div>
+        <script type="text/javascript">
+            var nodes = new vis.DataSet([{'id': 'он', 'label': 'он'}, {'id': 'рябчиком', 'label': 'рябчиком'}, {'id': 'один', 'label': 'один'}, {'id': 'его', 'label': 'его'}, {'id': 'дикарь', 'label': 'дикарь'}, {'id': 'людьми', 'label': 'людьми'}]);
+            var edges = new vis.DataSet([{'from': 'он', 'to': 'рябчиком', 'label': 'мог'}, {'from': 'один', 'to': 'его', 'label': 'остановил'}, {'from': 'дикарь', 'to': 'людьми', 'label': 'говорил'}]);
+
+            var container = document.getElementById('graph-container');
+            var data = {
+                nodes: nodes,
+                edges: edges
+            };
+            var options = {};
+            var network = new vis.Network(container, data, options);
+        </script>
+    </body>
+    </html>
+    
