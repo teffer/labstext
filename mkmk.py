@@ -1,19 +1,18 @@
 import spacy
 import networkx as nx
-
+from collections import Counter
+nlp = spacy.load('en_core_web_lg')
 def load_text(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
         text = file.read()
     return text
 
 def sentence_segmentation(text):
-    nlp = spacy.load('ru_core_news_lg')
     doc = nlp(text)
     sentences = [sent.text for sent in doc.sents]
     return sentences
 
 def syntactic_analysis(sentence):
-    nlp = spacy.load('ru_core_news_lg')
     doc = nlp(sentence)
     return doc
 
@@ -23,27 +22,24 @@ def named_entity_recognition(doc):
 
 def build_knowledge_graph(sentences):
     graph = nx.DiGraph()
-
     for sentence in sentences:
         doc = syntactic_analysis(sentence)
-        entities = named_entity_recognition(doc)
-        subject =''
-        predicate =''
-        obj=''
-        # Extracting subject, predicate, and object
+        obj=None
+        subject =None
         for token in doc:
-            if token.dep_ == 'nsubj':
-                subject = token.text
-            elif token.dep_ == 'ROOT':
+            if token.dep_ == 'ROOT':
                 predicate = token.text
-            elif token.dep_ in ('obj', 'obl'):
+                obj=None
+                subject =None
+                for child in token.children:
+                    if'nsubj' in child.dep_:
+                        subject = child.text
+            elif token.dep_ in ('dobj', 'obl','pobj'):
                 obj = token.text
-
-        # Adding nodes and edges to the graph
-        if subject and predicate and obj:
-            graph.add_node(subject)
-            graph.add_node(obj)
-            graph.add_edge(subject, obj, label=predicate)
+            if subject and obj:
+                graph.add_node(subject)
+                graph.add_node(obj)
+                graph.add_edge(subject, obj, label=predicate)
 
     return graph
 
@@ -87,14 +83,22 @@ def search_in_graph(graph, query):
 def start():
     file_path = 'text.txt'
     text = load_text(file_path)
+    doc = nlp(text)
+    entities = named_entity_recognition(doc)
+    c = Counter(entities)
+    res = [x for x in entities if c[x] == 1]
+    counter = 0
+    for entity in res:
+        print(entity)
+        text = text.replace(entity[0], f'entity_{counter}')
+        counter += 1
+    print(res)
     sentences = sentence_segmentation(text)
     knowledge_graph = build_knowledge_graph(sentences)
     visualize_graph(knowledge_graph)
-
-    # Example search
-    query = input("Enter the object to search: ")
+    query = input("Поиск слова: ")
     results = search_in_graph(knowledge_graph, query)
-    print(f"Objects related to {query}: {results}")
+    print(f"Объекты связанные с {query}: {results}")
 
 if __name__ == '__main__':
     start()
